@@ -1,0 +1,20 @@
+# Render Blueprint for the API. In Render: New > Blueprint > pick this repo.
+services:
+  - type: web
+    name: gridrush-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev && npm run build -w shared && npm run build -w server
+    startCommand: npm run start -w server
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: LOG_LEVEL
+        value: info
+      - key: MONGODB_URI
+        sync: false # paste your Atlas connection string in the dashboard
+      - key: CLIENT_ORIGIN
+        sync: false # e.g. https://gridrush.vercel.app
